@@ -18,14 +18,19 @@ export async function POST(req) {
     // Generate a token
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '5d' });
 
-    // Set token in HTTP-only cookie
+    // Set token in HTTP-only cookie with domain setting
     const res = NextResponse.json({ success: true });
+
+    // Get the domain from the environment variables (adjust if necessary)
+    const domain = process.env.NODE_ENV === 'production' ? 'arete-ai.vercel.app' : 'localhost';
+
     res.headers.append('Set-Cookie', serialize('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
         maxAge: 5 * 24 * 60 * 60, // 5 days
         sameSite: 'strict',
         path: '/',
+        domain: domain,  // Set the domain explicitly
     }));
 
     if (existingUserByPhone || existingUserByEmail) {
