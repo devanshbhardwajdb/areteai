@@ -5,22 +5,28 @@ import React, { useEffect, useState } from 'react';
 import LoadingBar from 'react-top-loading-bar';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import { useAuth } from '@/context/AuthContext';
 
 const ClientWrapper = ({ children, initial }) => {
-  const [user, setUser] = useState(initial.decoded || null);
+  // const [user, setUser] = useState(initial.decoded || null);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
+  const { user, resetUser } = useAuth();
 
-  useEffect(() => {
-    if (initial.decoded) {
-      setUser(initial.decoded);
-    }
-  }, [initial.decoded]);
+
+  // useEffect(() => {
+  //   if (initial.decoded) {
+  //     setUser();
+  //   }
+  // }, []);
 
   const logout = async () => {
     const res = await fetch('/api/auth/logout', { method: 'POST' });
-    if (res.ok) {
-      setUser(null);
+    const data = await res.json()
+
+    // console.log(data)
+    if (data.success) {
+      resetUser(); 
       router.push('/');
     }
   };
@@ -35,9 +41,7 @@ const ClientWrapper = ({ children, initial }) => {
         onLoaderFinished={() => setProgress(0)}
       />
       <Navbar tokenUserData={user} logout={logout} />
-      {React.Children.map(children, (child) => {
-        return React.cloneElement(child, { tokenUserData: user }); // Pass user to all children
-      })}
+      {children}
     </>
   );
 };

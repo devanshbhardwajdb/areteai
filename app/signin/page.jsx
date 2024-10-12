@@ -1,5 +1,5 @@
 "use client"
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { parseCookies } from 'nookies';
 import { FcGoogle } from "react-icons/fc";
@@ -26,6 +26,8 @@ const Signup = () => {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
 
+            // console.log(user)
+
             const userData = {
                 name: user.displayName,
                 email: user.email,
@@ -42,6 +44,7 @@ const Signup = () => {
             });
 
             const data = await res.json();
+            // console.log(data)
             if (data.success) {
                 toast.success('You are signed up successfully.', {
                     position: "top-center",
@@ -86,35 +89,36 @@ const Signup = () => {
     };
     useEffect(() => {
 
-        if(user){
+        if (user) {
             router.push('/')
         }
-    
-        }, [user])
+
+    }, [user])
 
     return (
-        <div className='min-h-screen px-[10vw] flex flex-col justify-center items-center font-noto max-md:px-6 max-md:pt-28'>
+        <div className='min-h-screen px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28'>
             <Head>
                 <title>SignIn to AreteAI</title>
                 <meta name="description" content="Signup to AreteAI" />
             </Head>
             <ToastContainer />
+            <div className="flex flex-col  items-center md:w-1/2 w-full h-1/2 p-8 rounded-lg shadow-lg shadow-black/50 bg-black/60 font-mont gap-20 ">
+                <div className="flex  items-center justify-center">
 
-            <div className="flex flex-col gap-2 items-center md:w-1/2 w-full h-auto p-8 rounded-lg shadow-lg shadow-gray-900 bg-gray-200">
-            <div className="flex  items-center justify-center">
+                    <h3 className="text-white/90 text-6xl font-bold"><span className='text-[#00a6a6]'>Arete</span>AI</h3>
+                    {/* <Lottie animationData={A2} loop={true} className='w-1/2 bg-red-400 p-0' /> */}
+                </div> 
+                <div className='flex flex-col items-center gap-4'>
+                    <h3 className="text-white/90 text-2xl font-bold">Join and start assessing yourself</h3>
 
-                <h3 className="text-black text-2xl font-bold">Join AreteAI</h3>
-                <Lottie animationData={A2} loop={true} className='w-1/2 bg-red-400 p-0' />
-            </div>
-                <h3 className="text-black text-2xl font-bold">Sign in with Google</h3>
-
-                <button
-                    type='button'
-                    onClick={handleGoogleSignIn}
-                    className='flex items-center gap-2 justify-center bg-white text-black hover:bg-gray-200 duration-150 transition-all p-2 rounded-xl border border-gray-600 '>
-                    <FcGoogle size={40} />
-                    {loading ? <Lottie animationData={A1} loop={true} className='w-6 invert' /> : <p>Sign in with Google</p>}
-                </button>
+                    <button
+                        type='button'
+                        onClick={handleGoogleSignIn}
+                        className='flex items-center gap-2 justify-center bg-gray-700 text-white/90 hover:bg-black duration-150 transition-all p-2 w-60 rounded-xl '>
+                        <FcGoogle size={40} />
+                        {loading ? <Lottie animationData={A1} loop={true} className='w-6 invert' /> : <p>Sign in with Google</p>}
+                    </button>
+                </div>
             </div>
         </div>
     );

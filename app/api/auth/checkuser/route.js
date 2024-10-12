@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 export async function GET(req) {
     // Get the 'cookie' header from the request
     const cookieHeader = req.headers.get('cookie');
-    
+
     if (!cookieHeader) {
         return NextResponse.json({ user: null }); // No cookies present, return null
     }
