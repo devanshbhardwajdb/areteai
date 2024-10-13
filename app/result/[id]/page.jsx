@@ -61,8 +61,8 @@ const Result = () => {
 
             ) : (
                 <div className="flex flex-col gap-2 items-center md:w-3/4 w-full h-auto p-8 rounded-lg shadow-lg shadow-black/50 duration-150 transition-all font-mont  backdrop-blur-md bg-black/60 mt-40">
-                    <h3 className="text-white/90 text-2xl font-bold">Evaluation of your Assessment</h3>
-                    <h3 className="text-white/90 text-xl font-semibold mb-1">For {result.class}th class</h3>
+                    <h3 className="text-white/90 text-2xl max-lg:text-xl text-center font-bold">Evaluation of your Assessment</h3>
+                    <h3 className="text-white/90 text-xl max-lg:text-base font-semibold mb-1">For {result.class}th class</h3>
                     <div className="flex mt-6 gap-8 flex-col w-full">
                         {Object.keys(result.answers).map((elem, index) => {
                             const intelligence = result.answers[elem];
@@ -88,7 +88,7 @@ const Result = () => {
                         {loading ? (
                             <Lottie animationData={A1} loop={true} className="w-6" />
                         ) : (
-                            'Generate Analyzed AI Report'
+                            'Generate Report'
                         )}
                     </button>
                 </div>

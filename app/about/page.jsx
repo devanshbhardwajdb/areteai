@@ -20,17 +20,17 @@ const About = () => {
     return (
         <>
             <Head>
-                <title>AreteAI</title>
+                <title>AreteAI - About</title>
                 {/* Description */}
-                <meta name="description" content="Actualize your true potential" />
+                <meta name="description" content="All you need to know about AreteAI" />
                 {/* Open Graph metadata for sharing on social media */}
                 <meta property="og:title" content="AreteAI" />
-                <meta property="og:description" content="Actualize your true potential" />
+                <meta property="og:description" content="All you need to know about AreteAI" />
                 <meta property="og:image" content="https://arete-ai.vercel.app/logo.png" />
                 {/* Twitter Card metadata */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="AreteAI" />
-                <meta name="twitter:description" content="Actualize your true potential" />
+                <meta name="twitter:description" content="All you need to know about AreteAI" />
                 <meta name="twitter:image" content="https://arete-ai.vercel.app/logo.png" />
             </Head>
             <motion.div className='  lg:px-[8vw] px-4 min-h-[80vh] xl:py-[25vh] py-[10vh]  max-lg:flex-col   flex w-full  items-center justify-center   gap-8'>

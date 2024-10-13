@@ -6,6 +6,7 @@ import LoadingBar from 'react-top-loading-bar';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/context/AuthContext';
+import Footer from './Footer';
 
 const ClientWrapper = ({ children, initial }) => {
   // const [user, setUser] = useState(initial.decoded || null);
@@ -40,8 +41,9 @@ const ClientWrapper = ({ children, initial }) => {
         height={4}
         onLoaderFinished={() => setProgress(0)}
       />
-      <Navbar tokenUserData={user} logout={logout} />
+      <Navbar user={user} logout={logout} />
       {children}
+      <Footer/>
     </>
   );
 };

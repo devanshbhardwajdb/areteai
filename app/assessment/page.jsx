@@ -34,31 +34,13 @@ const Assessment = ( ) => {
                 router.push(`/assessment/${userClass}?c=${couponCode}`)
             }
             else {
-                toast.error('Invalid Coupon Code!', {
-                    position: 'top-center',
-                    autoClose: 2000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'dark',
-                });
+                toast.error('Invalid Coupon Code!');
             }
 
 
         } catch (error) {
             console.error('Error logging in:', error);
-            toast.error('Invalid credentials', {
-                position: 'top-center',
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'dark',
-            });
+            toast.error('Invalid credentials');
         } finally {
             setLoading(false);
 
@@ -78,23 +60,20 @@ const Assessment = ( ) => {
     return (
         <div className="min-h-[100vh] px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28">
             <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={true}
                 newestOnTop={false}
-                closeOnClick
                 rtl={false}
                 pauseOnFocusLoss
-                draggable
-                pauseOnHover
                 theme="dark"
             />
             <form
                 onSubmit={(e) => handleSubmit(e)}
 
-                className="flex flex-col gap-2 items-center md:w-1/2 w-full h-auto p-8 rounded-lg shadow-lg shadow-black/50 duration-150 transition-all font-mont  backdrop-blur-md bg-black/60"
+                className="flex flex-col gap-2 items-center lg:w-1/2 w-full h-auto p-8 rounded-lg shadow-lg shadow-black/50 duration-150 transition-all font-mont  backdrop-blur-md bg-black/60"
             >
-                <h3 className="text-white/90 text-2xl font-bold mb-1">Start Assessing Yourself</h3>
+                <h3 className="text-white/90 text-2xl max-lg:text-xl font-bold mb-1">Start Assessing Yourself</h3>
 
                 <div className="flex mt-6 gap-8 flex-col w-full">
                     <div className="flex flex-col w-full">

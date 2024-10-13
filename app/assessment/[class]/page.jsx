@@ -13,7 +13,10 @@ import { useAuth } from '@/context/AuthContext';
 
 const Questions = () => {
     const router = useRouter();
+    
+
     const { class: userClass } = useParams(); // Get class parameter from route
+    // console.log(userClass,"ye hoon main")
     const searchParams = useSearchParams(); // Get query parameters
     const couponCode = searchParams.get('c'); // Example query parameter
     const { user } = useAuth();
@@ -38,7 +41,7 @@ const Questions = () => {
     useEffect(() => {
         const fetchResult = async () => {
             try {
-                const res = await fetch(`/api/questions/getquestions?class=${userClass}`);
+                const res = await fetch(`/api/questions/getquestions?selectedClass=${userClass}`);
                 const response = await res.json();
 
                 if (response.success) {
@@ -161,7 +164,7 @@ const Questions = () => {
 
             // Continue with submission logic
             const email = user.email;
-            const uniqueId = `${email}-${new Date().getTime()}`;
+            const uniqueId = `${user.username}_${new Date().getTime()}`;
 
             const dataToSave = {
                 email,
@@ -235,15 +238,12 @@ const Questions = () => {
     return (
         <div className="min-h-[100vh] px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28">
             <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={true}
                 newestOnTop={false}
-                closeOnClick
                 rtl={false}
                 pauseOnFocusLoss
-                draggable
-                pauseOnHover
                 theme="dark"
             />
             {pageLoading ?
@@ -263,8 +263,8 @@ const Questions = () => {
                             style={{ width: `${progress}%` }}
                         />
                     </div>
-                    <h3 className="text-white/90 text-2xl font-bold">Answer the Questions</h3>
-                    <h4 className="text-white/90 text-xl font-medium mb-1">(On the scale of 1-{questionSet.scale})</h4>
+                    <h3 className="text-white/90 text-2xl max-lg:text-xl font-bold">Answer the Questions</h3>
+                    <h4 className="text-white/90 text-xl max-lg:text-base font-medium mb-1">(On the scale of 1-{questionSet.scale})</h4>
                     <div className="flex mt-6 gap-8 flex-col w-full">
 
                         {/* Display current set of questions */}

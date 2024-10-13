@@ -27,12 +27,13 @@ const Signup = () => {
             const user = result.user;
 
             // console.log(user)
+            const username = user.email.split("@")[0]
 
             const userData = {
                 name: user.displayName,
+                username,
                 email: user.email,
                 profilepic: user.photoURL,
-                phone: '', // You can ask for the phone later if needed
             };
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/auth/signin`, {
@@ -46,43 +47,18 @@ const Signup = () => {
             const data = await res.json();
             // console.log(data)
             if (data.success) {
-                toast.success('You are signed up successfully.', {
-                    position: "top-center",
-                    autoClose: 1900,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-                // Store token if returned
-                // localStorage.setItem('token', data.token);
-                router.push('/'); // Redirect to homepage or desired route
+                toast.success('You are signed up successfully.');
+                
+                setTimeout(() => {
+                    router.push('/')
+                }, 3000); 
             } else {
-                toast.error(data.error, {
-                    position: "top-center",
-                    autoClose: 1900,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
+                toast.error(data.error);
             }
         } catch (error) {
             console.error('Error signing in with Google:', error);
-            toast.error(`${error.message}`, {
-                position: "top-center",
-                autoClose: 1900,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+
+            toast.error(`${error.message}`);
         } finally {
             setLoading(false);
         }
@@ -99,9 +75,27 @@ const Signup = () => {
         <div className='min-h-screen px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28'>
             <Head>
                 <title>SignIn to AreteAI</title>
-                <meta name="description" content="Signup to AreteAI" />
+                {/* Description */}
+                <meta name="description" content="Join AreteAI to evaluate yourself" />
+                {/* Open Graph metadata for sharing on social media */}
+                <meta property="og:title" content="AreteAI" />
+                <meta property="og:description" content="Join AreteAI to evaluate yourself" />
+                <meta property="og:image" content="https://arete-ai.vercel.app/logo.png" />
+                {/* Twitter Card metadata */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="AreteAI" />
+                <meta name="twitter:description" content="Join AreteAI to evaluate yourself" />
+                <meta name="twitter:image" content="https://arete-ai.vercel.app/logo.png" />
             </Head>
-            <ToastContainer />
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                rtl={false}
+                pauseOnFocusLoss
+                theme="dark"
+            />
             <div className="flex flex-col  items-center md:w-1/2 w-full h-1/2 p-8 rounded-lg shadow-lg shadow-black/50 bg-black/60 font-mont gap-20 ">
                 <div className="flex  items-center justify-center">
 

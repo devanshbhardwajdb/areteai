@@ -4,8 +4,8 @@ import connectDB from '@middleware/database';
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
-    const classNum = searchParams.get('class');
-    // console.log(classNum)
+    const classNum = searchParams.get('selectedClass');
+    console.log(classNum)
     await connectDB();
 
     const questionSet = await Question.findOne({ class: classNum });

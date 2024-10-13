@@ -20,7 +20,7 @@ const Hero = () => {
     return (
         <>
             <Head>
-                <title>AreteAI</title>
+                <title>AreteAI - Home</title>
                 {/* Description */}
                 <meta name="description" content="Actualize your true potential" />
                 {/* Open Graph metadata for sharing on social media */}
@@ -33,11 +33,11 @@ const Hero = () => {
                 <meta name="twitter:description" content="Actualize your true potential" />
                 <meta name="twitter:image" content="https://arete-ai.vercel.app/logo.png" />
             </Head>
-            <motion.div className='  lg:px-[8vw] min-h-[90vh] xl:py-[28vh] py-[10vh]  max-lg:flex-col   flex w-full  items-center justify-center relative  gap-8 '>
+            <motion.div className='  lg:px-[8vw] min-h-[90vh]  xl:py-[28vh] py-[10vh]  max-lg:flex-col   flex w-full  items-center justify-center relative  gap-8 '>
 
           
-                <div class="loader z-[-50] w-[50vw] h-[80vh] max-xl:h-[30vh] max-xl:w-[90vw]">
-                    <div class="loader_blob loader_blob--color"></div>
+                <div className="loader z-[-50] w-[50vw] h-[80vh] max-xl:h-[30vh] max-xl:w-[90vw]">
+                    <div className="loader_blob loader_blob--color"></div>
                 </div>
 
                 <div className='flex flex-col items-center  text-white/90  xl:w-1/2 '>

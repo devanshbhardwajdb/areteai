@@ -3,6 +3,12 @@ import { Schema, model, models } from "mongoose";
 const UserSchema = new Schema({
     name: {
         type: String,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true,
     },
     profilepic: {
         type: String,
@@ -11,10 +17,6 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
-    },
-    phone: {
-        type: Number,
         unique: true,
     },
     role: {

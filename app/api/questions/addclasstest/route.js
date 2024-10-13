@@ -1,6 +1,7 @@
-// app/api/questions/create/route.js
 import Question from '@models/Question';
 import connectDB from '@middleware/database';
+import { NextResponse } from 'next/server';
+
 
 export async function POST(req) {
     const { class: classNum, scale, intelligences } = await req.json();
@@ -18,10 +19,10 @@ export async function POST(req) {
     const newQuestionSet = new Question({
         class: classNum,
         scale,
-        intelligences // This should now be an array of intelligence types and their respective questions
+        intelligences 
     });
 
     await newQuestionSet.save();
 
-    return new Response(JSON.stringify({ success: true, message: 'Questions added successfully.' }), { status: 200 });
+    return NextResponse.json({ success: true, message:"Class Added Successfully" }, { status: 201 });
 }

@@ -6,14 +6,13 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
     await connectDB(); // Connect to the database
-    const { name, email, phone, profilepic } = await req.json();
+    const { name, username, email, profilepic } = await req.json();
 
     // Check if a user already exists with the same phone or email
-    const existingUserByPhone = await User.findOne({ phone });
     const existingUserByEmail = await User.findOne({ email });
 
     // Create JWT payload
-    const tokenPayload = { name, email, profilepic, phone };
+    const tokenPayload = { name, username, email, profilepic };
 
     // Generate a token
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '5d' });
@@ -33,7 +32,7 @@ export async function POST(req) {
         domain: domain,  // Set the domain explicitly
     }));
 
-    if (existingUserByPhone || existingUserByEmail) {
+    if ( existingUserByEmail) {
         // User already exists, just send success response
         return res;
     }
@@ -41,9 +40,9 @@ export async function POST(req) {
     // If user does not exist, create a new user
     let newUser = new User({
         name,
+        username,
         email,
         profilepic,
-        phone,
         role: email === process.env.ADMIN_EMAIL ? 'admin' : 'user',
     });
     await newUser.save();

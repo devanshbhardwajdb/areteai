@@ -39,7 +39,6 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ClientWrapper >{children}</ClientWrapper> {/* Pass the token as initial data */}
         </AuthProvider>
-        <Footer />
       </body>
     </html>
   );

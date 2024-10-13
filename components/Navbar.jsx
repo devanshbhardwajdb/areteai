@@ -3,25 +3,24 @@ import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { navVariants } from "@/utils/motion";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { MdAccountCircle } from 'react-icons/md';
 
 
-const Navbar = ({ tokenUserData, logout }) => {
+const Navbar = ({ user, logout }) => {
 
-  // sirf navbar mein user ko tokenuserdata ke naam se use kiya hai baaki mein useAuth() ka use krke user lerha hai
   const ref6 = useRef();
+  const pathname = usePathname();
   const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const [menu, setMenu] = useState(false)
 
-  // console.log(tokenUserData)
+  // console.log(user)
 
-
-
-  const toggleMenu = () => {
-    setMenu(!menu)
-  }
+  useEffect(() => {
+    setDropdown(false)
+    setMenu(false)
+  }, [pathname])
 
   useEffect(() => {
     const navbarHeight = document.getElementById('navbar').offsetHeight;
@@ -67,7 +66,7 @@ const Navbar = ({ tokenUserData, logout }) => {
 
 
 
-          {!tokenUserData ?
+          {!user ?
             <div className='flex gap-3'>
 
               <Link href={'/signin'}><button className='nav-btn  bg-[#00a6a6] text-black px-5 py-2 rounded-lg  transition-all duration-150  hover:scale-95  hover:shadow-lg  w-full flex  justify-center items-center' >
@@ -80,13 +79,13 @@ const Navbar = ({ tokenUserData, logout }) => {
               <div className='lg:relative  flex gap-2'>
 
 
-                {tokenUserData && <>
+                {user && <>
 
                   <div onClick={() => { setDropdown(!dropdown); }} className=' cursor-pointer   p-3 flex items-center justify-center'>
 
-                    {tokenUserData?.profilepic ?
+                    {user?.profilepic ?
 
-                      <img alt={`${tokenUserData?.name}'s profilepic`} className="rounded-full w-10 h-10" src={tokenUserData.profilepic} ></img>
+                      <img alt={`${user?.name}'s profilepic`} className="rounded-full w-10 h-10" src={user.profilepic} ></img>
                       :
 
                       <MdAccountCircle className='rounded-full w-10 h-10 text-black' />
@@ -100,7 +99,7 @@ const Navbar = ({ tokenUserData, logout }) => {
                     className="dropdown  bg-black/60 absolute right-0 max-lg:left-0  px-10  pt-6 pb-4 rounded-lg lg:rounded-t-none gap-5 flex flex-col shadow-md shadow-gray-900   "
                   >
 
-                    <Link href={`/Profile/${tokenUserData?.username}`} className={` hover:underline-offset-8 hover:underline hover:scale-[1.01] duration-200 items cursor-pointer `} ><h4>My Profile</h4></Link>
+                    <Link href={`/profile/${user?.username}`} className={` hover:underline-offset-8 hover:underline hover:scale-[1.01] duration-200 items cursor-pointer `} ><h4>My Profile</h4></Link>
                     <button onClick={logout} className='nav-btn  bg-[#00a6a6]  text-black px-5 py-2 rounded-lg  transition-all duration-150  hover:scale-95 ' >Logout</button>
 
                   </div>
@@ -123,7 +122,7 @@ const Navbar = ({ tokenUserData, logout }) => {
 
           <Link href={'/assessment'} className={` hover:underline-offset-8 hover:underline hover:scale-[1.1] duration-200 items cursor-pointer `} ><h1>Assessment</h1></Link>
 
-          {!tokenUserData ?
+          {!user ?
             <div className='flex gap-3'>
 
 
@@ -136,7 +135,7 @@ const Navbar = ({ tokenUserData, logout }) => {
             : (
 
               <>
-                <Link href={`/Profile/${tokenUserData?.username}`} className={` hover:text-[#00a6a6] hover:shadow-glow hover:scale-[1.1] duration-200 items cursor-pointer `} ><h1>Your Profile</h1></Link>
+                <Link href={`/profile/${user?.username}`} className={` hover:text-[#00a6a6] hover:shadow-glow hover:scale-[1.1] duration-200 items cursor-pointer `} ><h1>Your Profile</h1></Link>
                 <button onClick={logout} className='nav-btn  bg-[#00a6a6]  text-black px-5 py-2 rounded-lg  transition-all duration-150  hover:scale-95 ' >Logout</button>
               </>
 
