@@ -33,7 +33,7 @@ const About = () => {
                 <meta name="twitter:description" content="All you need to know about AreteAI" />
                 <meta name="twitter:image" content="https://arete-ai.vercel.app/logo.png" />
             </Head>
-            <motion.div className='  lg:px-[8vw] px-4 min-h-[80vh] xl:py-[25vh] py-[10vh]  max-lg:flex-col   flex w-full  items-center justify-center   gap-8'>
+            <motion.div className='  lg:px-[8vw] px-4 min-h-[100vh] xl:py-[25vh] py-[10vh]  max-lg:flex-col   flex w-full  items-center justify-center   gap-8'>
                 
                 <div className='flex flex-col items-center justify-center gap-6 text-cente    '>
 

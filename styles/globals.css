@@ -7,26 +7,32 @@
 
 
 body {
-    padding: 0%;
-    margin: 0;
-    cursor: default;
+  padding: 0%;
+  margin: 0;
+  cursor: default;
 
 
 }
+
 /* Disable text selection for the entire page */
 body {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
 
-html {  
-    scroll-behavior: smooth;
-    scroll-padding-top: 8vh;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 8vh;
 
 }
+
 
 .bg_main {
   --color: rgba(100, 100, 100, 0.158);
@@ -41,6 +47,7 @@ html {
   0% {
     background-position: 0 0, 0 0;
   }
+
   100% {
     background-position: 110px 110px, 110px 110px;
   }
@@ -48,7 +55,7 @@ html {
 
 
 .loader {
-  
+
   position: absolute;
   opacity: 10%;
   display: flex;
@@ -60,9 +67,11 @@ html {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 50%; /* More rounded to look like a blob */
+  border-radius: 50%;
+  /* More rounded to look like a blob */
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.3); /* Light glow */
+  background-color: rgba(255, 255, 255, 0.3);
+  /* Light glow */
   border: 2px solid rgba(255, 255, 255, 0.3);
   filter: blur(4px);
   animation: blobAnimation 3s ease-in-out infinite;
@@ -74,141 +83,52 @@ html {
   filter: blur(15px);
   background: linear-gradient(135deg, #1afbf0, #00a6a6);
   animation: colorBlobAnimation 3s ease-in-out infinite;
-  width: 90%; /* Make the colored blob slightly smaller */
+  width: 90%;
+  /* Make the colored blob slightly smaller */
   height: 90%;
   border-radius: 50%;
 }
 
 @keyframes blobAnimation {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1) translateY(0);
   }
+
   50% {
-    transform: scale(1.25) translateY(-50px); /* Blob squish effect */
+    transform: scale(1.25) translateY(-50px);
+    /* Blob squish effect */
   }
 }
 
 @keyframes colorBlobAnimation {
-  
+
   50% {
-    transform: rotate(10deg) scale(1.02); /* Smooth scale and rotation */
-  }
-  0%, 100% {
-    transform: rotate(-10deg) scale(1.05); /* Smooth scale and rotation */
-  }
-}
-
-
-.bg_main2{
-    background: url("/background.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-
-
-
-.text_main {
-    background-color: #FF5BB3;
-    /* background-image: linear-gradient(45deg, #f3ec78, #af4261); */
-    background-image: linear-gradient(to bottom left, #E72B2B, #FF5BB3, #9B03F8, #FF804A);
-    background-position: top;
-    background-size: 100%;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -moz-text-fill-color: transparent;
-   
-}
-
-.text-shadow {
-    text-shadow: 0 4px 3px rgba(0, 0, 0, 0.8);
-  }
-.text-shadow2 {
-    text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.8);
-  }
-  .hero_link:hover .hero_button{
-    background: transparent;
-    color: #000;
+    transform: rotate(10deg) scale(1.02);
+    /* Smooth scale and rotation */
   }
 
-
-.bg_button1 {
-    background-image: linear-gradient(to bottom left, #FF5BB3, #9B03F8);
+  0%,
+  100% {
+    transform: rotate(-10deg) scale(1.05);
+    /* Smooth scale and rotation */
+  }
 }
 
 
 
-.bg_border {
-    border-image: linear-gradient(to right, #E72B2B, #FF5BB3, #9B03F8, #FF804A);
-}
-.bg_border1 {
-    border-image: linear-gradient(to left, #FF5BB3, #9B03F8);
-}
-.bg7-image {
-    background-image: url('/bg7.jpg');
-     /* Adjust size as needed */
-}
 
 
 body::-webkit-scrollbar {
-    display: block;
-    width: 6px;
-    background: #fff;
+  display: block;
+  width: 6px;
+  background: #fff;
 }
 
 
 body::-webkit-scrollbar-thumb {
-    /* background-image: linear-gradient(to bottom, #FF5BB3, #9B03F8); */
-    background-color: #000000;
-    ;
+  /* background-image: linear-gradient(to bottom, #FF5BB3, #9B03F8); */
+  background-color: #000000;
+  ;
 }
-
-
-
-
-/* *::selection {
-    background-color: #FF5BB3;
-    color: #9B03F8;
-    
-  } */
-
-
-  .cursor {
-    height: 20px;
-    width: 20px;
-    background-image: linear-gradient(to bottom, #FF5BB3, #9B03F8);
-    border-radius: 50%;
-    filter: blur(2px);
-    position: fixed;
-    z-index: 100;
-    transition: all ease 0.1s;
-  
-  
-  }
-  
-  .cursor-b {
-    height: 400px;
-    width: 400px;
-    background-image: linear-gradient(to bottom, #6cd869, #9B03F8);
-    border-radius: 50%;
-    position: fixed;
-    opacity: 40%;
-    filter: blur(40px);
-    z-index: -2;
-    transition: all linear 0.4s;
-  }
-
- 
-
-
-
-  .glassmorphism {
-    @apply rounded-xl  bg-transparent shadow-[inset_0px_2220px_50px_0_rgb(0,0,0,0.3)] backdrop-blur p-5;
-  }
-  .glassmorphism1 {
-    @apply rounded-full  bg-transparent shadow-[inset_0px_2220px_50px_0_rgb(0,0,0,0.3)] backdrop-blur p-5;
-  }
-
-  
