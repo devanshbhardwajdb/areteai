@@ -9,7 +9,7 @@ import Lottie from "lottie-react";
 import { useAuth } from '@/context/AuthContext';
 
 
-const About = () => {
+const PrivcacyPolicy = () => {
 
 
     const { user } = useAuth();
@@ -43,7 +43,7 @@ const About = () => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, amount: 0.9 }}
-                            className='font-mont text-5xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >About Us</motion.h1>
+                            className='font-mont text-5xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >Privacy Policy</motion.h1>
                     </motion.div>
 
 
@@ -52,8 +52,7 @@ const About = () => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, amount: 0.9 }}
-                        className='font-mont  text-white/90 text-justify text-xl max-lg:text-lg '>We provide the solution to guide to your future through analysing your potential, through our assessments and providing a one solution for all the students out there.<br/>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum maiores est corrupti ad at quis accusamus vero accusantium? Consequuntur eius nihil quo voluptatem animi consectetur sit, et tempore similique quaerat dolor in autem, reprehenderit optio ducimus neque quasi expedita tenetur harum est quae nisi distinctio eum illum. Corrupti, laudantium laborum! Necessitatibus reprehenderit dolores id aliquid iusto et veniam fugiat. Ipsa, possimus? Repellat, doloremque necessitatibus? Fugit veniam ex similique molestias nisi id, obcaecati quos magnam nam. Eaque nesciunt nisi velit quis ipsum cum ex quos alias numquam? Sed aliquam impedit provident ad blanditiis ipsa? Eveniet nesciunt excepturi laboriosam illum, velit non!</motion.h2>
+                        className='font-mont  text-white/90 text-justify text-xl  max-lg:text-lg '>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis hic error molestiae illo est quod officia repellendus at voluptas, non dignissimos maxime facere quaerat! Neque iusto magnam fugiat? Placeat recusandae quam omnis ex et eius expedita. Sit repudiandae quas, hic quis accusantium, maiores expedita quae voluptas eos labore sed placeat sapiente debitis inventore, doloribus obcaecati? Distinctio est, exercitationem dolor soluta explicabo atque blanditiis necessitatibus ut reiciendis voluptatem quisquam iure quasi nemo iste. Autem pariatur obcaecati labore ut repellendus corporis eligendi quae animi fugit fuga. Molestias, harum necessitatibus voluptas, laudantium dolor atque, minus quibusdam ex ipsam doloremque tenetur. Libero repellat accusantium sequi exercitationem expedita molestias optio! Eius iusto, perspiciatis ea qui veniam provident rerum nemo quae odit, non velit aperiam mollitia voluptatibus animi amet pariatur nesciunt harum fugiat. Excepturi magnam dolores illo impedit magni vitae natus tempore. Alias fuga minus hic ab nihil natus architecto reiciendis. Voluptatem at, nam veritatis explicabo est illum laboriosam, ipsam odio eligendi itaque vero iusto maiores autem iure quis sunt minima. Rerum magni, repellat ducimus, officia sit veniam doloremque voluptate, laboriosam adipisci neque quae iste illum iure voluptas quam reprehenderit.</motion.h2>
 
 
                 </div>
@@ -63,4 +62,4 @@ const About = () => {
     );
 }
 
-export default About;
+export default PrivcacyPolicy;

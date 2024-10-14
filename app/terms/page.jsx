@@ -9,7 +9,7 @@ import Lottie from "lottie-react";
 import { useAuth } from '@/context/AuthContext';
 
 
-const About = () => {
+const Terms = () => {
 
 
     const { user } = useAuth();
@@ -43,7 +43,7 @@ const About = () => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, amount: 0.9 }}
-                            className='font-mont text-5xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >About Us</motion.h1>
+                            className='font-mont text-4xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >Terms & Conditions</motion.h1>
                     </motion.div>
 
 
@@ -52,8 +52,7 @@ const About = () => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, amount: 0.9 }}
-                        className='font-mont  text-white/90 text-justify text-xl max-lg:text-lg '>We provide the solution to guide to your future through analysing your potential, through our assessments and providing a one solution for all the students out there.<br/>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum maiores est corrupti ad at quis accusamus vero accusantium? Consequuntur eius nihil quo voluptatem animi consectetur sit, et tempore similique quaerat dolor in autem, reprehenderit optio ducimus neque quasi expedita tenetur harum est quae nisi distinctio eum illum. Corrupti, laudantium laborum! Necessitatibus reprehenderit dolores id aliquid iusto et veniam fugiat. Ipsa, possimus? Repellat, doloremque necessitatibus? Fugit veniam ex similique molestias nisi id, obcaecati quos magnam nam. Eaque nesciunt nisi velit quis ipsum cum ex quos alias numquam? Sed aliquam impedit provident ad blanditiis ipsa? Eveniet nesciunt excepturi laboriosam illum, velit non!</motion.h2>
+                        className='font-mont  text-white/90 text-justify text-xl  max-lg:text-lg '>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio nemo officiis odit laboriosam recusandae deserunt quisquam pariatur omnis, ullam quasi reiciendis! Autem repudiandae eius magnam ab? Labore delectus iste exercitationem. Dolore nobis similique incidunt facilis totam expedita voluptates illum, aspernatur earum explicabo. Odio ipsa voluptatibus sapiente fugit repellat, porro nesciunt ab incidunt necessitatibus. Necessitatibus dolore voluptate error ipsa fugit incidunt iste maiores, sapiente ratione nobis laudantium? Repudiandae vitae excepturi minus aliquid ipsa aut! Magni atque laborum eos, repellendus vitae doloribus voluptates natus perferendis sint. Eos magnam ipsam doloribus atque velit provident nostrum facere soluta fugiat blanditiis in, debitis officia omnis voluptatem impedit dignissimos ab nisi sunt dolorum, natus voluptas delectus similique veniam corrupti. Voluptatem assumenda sapiente asperiores odit natus quia, hic facilis, eaque quasi eos, recusandae totam sit accusamus voluptate fugiat. Quae, consectetur explicabo esse exercitationem ratione animi voluptas molestias voluptatibus laboriosam iste fugiat, accusamus aut repudiandae sequi nam ipsa facere eius. Eligendi voluptates perspiciatis odit rerum impedit enim soluta ratione vel cum sunt ullam et quo sapiente eius vero provident aliquam, dignissimos molestias! Perferendis, laudantium. Officiis, delectus quia. Ipsam vitae consequatur aspernatur exercitationem minus repellat. Et voluptatibus, ipsum quo odit doloremque optio sed magnam temporibus eaque quam nemo maxime.</motion.h2>
 
 
                 </div>
@@ -63,4 +62,4 @@ const About = () => {
     );
 }
 
-export default About;
+export default Terms;
