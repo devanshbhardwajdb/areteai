@@ -47,14 +47,14 @@ const Hero = () => {
                             variants={slideIn3('left', "tween", 0, 1.0)}
                             initial="hidden"
                             whileInView="show"
-                            viewport={{ once: false, amount: 0.9 }}
+                            viewport={{ once: true, amount: 0.9 }}
                             className=' text-[20vh] max-xl:text-[18vh] max-lg:text-[7vh]  text-[#00a6a6] pl-5 backdrop leading  ' >Arete</motion.h1>
 
                         <motion.h1
                             variants={slideIn3('right', "tween", 0, 1.0)}
                             initial="hidden"
                             whileInView="show"
-                            viewport={{ once: false, amount: 0.9 }}
+                            viewport={{ once: true, amount: 0.9 }}
                             className=' text-[20vh] max-xl:text-[18vh] max-lg:text-[7vh] text-white/90 px-5  '>AI</motion.h1>
                     </motion.div>
 
@@ -63,15 +63,15 @@ const Hero = () => {
                         variants={slideIn3('top', "tween", 0, 2.0)}
                         initial="hidden"
                         whileInView="show"
-                        viewport={{ once: false, amount: 0.9 }}
+                        viewport={{ once: true, amount: 0.9 }}
                         className='font-mont text-[5.5vh]  max-xl:text-[4vh] max-lg:text-[2.4vh] max-md:text-[2vh] '>Actualize your true Potential</motion.h2>
 
 
-                    {user ? <Link href={'/assessment'}><motion.button
+                    {user ? <Link href={``}><motion.button
                         variants={slideIn3('bottom', "tween", 0, 1.0)}
                         initial="hidden"
                         whileInView="show"
-                        viewport={{ once: false, amount: 0.9 }}
+                        viewport={{ once: true, amount: 0.9 }}
                         className='bg-[#00a6a6] text-black px-10 mt-10 py-3 font-mont text-lg max-md:text-xs max-md:px-4 max-md:py-2 rounded-full  duration-300   hover:shadow-md hover:shadow-black hover:scale-95'>Start Assessment</motion.button>
                     </Link> : <Link href={'/signin'}><motion.button
                         variants={slideIn3('bottom', "tween", 0, 1.0)}

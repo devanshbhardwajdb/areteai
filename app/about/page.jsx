@@ -43,7 +43,7 @@ const About = () => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, amount: 0.9 }}
-                            className='font-mont text-5xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >About Us</motion.h1>
+                            className='font-mont text-4xl max-lg:text-3xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >About Us</motion.h1>
                     </motion.div>
 
 
@@ -51,8 +51,8 @@ const About = () => {
                         variants={slideIn3('top', "tween", 0, 2.0)}
                         initial="hidden"
                         whileInView="show"
-                        viewport={{ once: true, amount: 0.9 }}
-                        className='font-mont  text-white/90 text-justify text-xl max-lg:text-lg '>We provide the solution to guide to your future through analysing your potential, through our assessments and providing a one solution for all the students out there.<br/>
+                        viewport={{ once: true, amount: 0.7 }}
+                        className='font-mont  text-white/90 text-justify text-xl max-lg:text-sm '>We provide the solution to guide to your future through analysing your potential, through our assessments and providing a one solution for all the students out there.<br/>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum maiores est corrupti ad at quis accusamus vero accusantium? Consequuntur eius nihil quo voluptatem animi consectetur sit, et tempore similique quaerat dolor in autem, reprehenderit optio ducimus neque quasi expedita tenetur harum est quae nisi distinctio eum illum. Corrupti, laudantium laborum! Necessitatibus reprehenderit dolores id aliquid iusto et veniam fugiat. Ipsa, possimus? Repellat, doloremque necessitatibus? Fugit veniam ex similique molestias nisi id, obcaecati quos magnam nam. Eaque nesciunt nisi velit quis ipsum cum ex quos alias numquam? Sed aliquam impedit provident ad blanditiis ipsa? Eveniet nesciunt excepturi laboriosam illum, velit non!</motion.h2>
 
 

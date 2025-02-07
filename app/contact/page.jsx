@@ -40,7 +40,7 @@ const Contact = () => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: false, amount: 0.9 }}
-                            className='font-mont text-5xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >Contact Us</motion.h1>
+                            className='font-mont text-5xl max-lg:text-3xl font-bold  text-[#00a6a6] pl-5 backdrop  ' >Contact Us</motion.h1>
                     </motion.div>
 
                 <div className='flex flex-col items-center justify-center gap-2 text-justify   '>
@@ -52,19 +52,19 @@ const Contact = () => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0.9 }}
-                        className='font-mont  text-white/90 text-center text-xl max-lg:text-lg '>Email: xyz@gmail.com</motion.h2>
+                        className='font-mont  text-white/90 text-center text-xl max-lg:text-base '>Email: xyz@gmail.com</motion.h2>
                     <motion.h2
                         variants={slideIn3('top', "tween", 0, 2.0)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0.9 }}
-                        className='font-mont  text-white/90 text-center text-xl max-lg:text-lg '>Phone: +91 XXXXXXXXXX</motion.h2>
+                        className='font-mont  text-white/90 text-center text-xl max-lg:text-base '>Phone: +91 XXXXXXXXXX</motion.h2>
                     <motion.h2
                         variants={slideIn3('top', "tween", 0, 2.0)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0.9 }}
-                        className='font-mont  text-white/90 text-center text-xl  max-lg:text-lg '>Address: XYZ, Colony, Mall, Gorakhpur</motion.h2>
+                        className='font-mont  text-white/90 text-center text-xl  max-lg:text-base '>Address: XYZ, Colony, Mall, Gorakhpur</motion.h2>
 
 
                 </div>
