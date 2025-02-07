@@ -18,6 +18,7 @@ const Result = () => {
     const { id } = useParams();
     const { user } = useAuth();
 
+
     useEffect(() => {
         if (!user) {
             router.push('/');
@@ -58,7 +59,7 @@ const Result = () => {
             const response = await fetch('/api/generateReport', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ result, totalScore, grandTotal }),
+                body: JSON.stringify({ result, totalScore, grandTotal, user }),
             });
     
             const data = await response.json();

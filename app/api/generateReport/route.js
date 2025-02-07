@@ -3,11 +3,24 @@ import puppeteer from 'puppeteer';
 import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import admin from 'firebase-admin';
+
+
+if (!admin.apps.length) {
+  // Ensure FIREBASE_SERVICE_ACCOUNT contains your service account JSON as a string.
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, 
+  });
+}
+const bucket = admin.storage().bucket();
 
 export async function POST(req) {
   try {
     // Expecting the request to include the results and scores
-    const { result, totalScore, grandTotal } = await req.json();
+    const { result, totalScore, grandTotal,user } = await req.json();
 
     // ── Build a prompt to generate a structured JSON analysis report ──
     const prompt = `
@@ -90,7 +103,7 @@ Return only valid JSON. Do not include any extra text or markdown formatting.
       console.error("Failed to parse JSON from OpenAI output:", jsonError, analysisJsonString);
       throw new Error("Invalid JSON received from AI analysis.");
     }
-    console.log(analysisData)
+    // console.log(analysisData)
     // ── Generate a consistent HTML report using the analysis data ──
     const htmlContent = generateHtmlReport(analysisData);
 
@@ -106,11 +119,20 @@ Return only valid JSON. Do not include any extra text or markdown formatting.
     await browser.close();
 
     // ── Save the PDF and return the public URL ──
-    const pdfFileName = `assessment-report-${Date.now()}.pdf`;
-    const pdfPath = path.join(reportsDir, pdfFileName);
-    await fs.writeFile(pdfPath, pdfBuffer);
+    const fileName = `${user.username}-assessment-report-${Date.now()}.pdf`;
+    const file = bucket.file(fileName);
 
-    return NextResponse.json({ pdfUrl: `/reports/${pdfFileName}` }, { status: 200 });
+    // Upload the PDF buffer directly with proper metadata
+    await file.save(pdfBuffer, {
+      metadata: { contentType: 'application/pdf' },
+    });
+    // Optionally, make the file public (or set your bucket rules to allow public read)
+    await file.makePublic();
+
+    // Construct the public URL for the PDF
+    const pdfUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+
+    return NextResponse.json({ pdfUrl }, { status: 200 });
   } catch (error) {
     console.error('Error generating PDF:', error);
     return NextResponse.json({ error: 'Failed to generate PDF' }, { status: 500 });
