@@ -8,11 +8,14 @@ import admin from 'firebase-admin';
 
 
 if (!admin.apps.length) {
-  // Ensure FIREBASE_SERVICE_ACCOUNT contains your service account JSON as a string.
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  console.log("Raw ENV:", process.env.FIREBASE_SERVICE_ACCOUNT);
-  console.log("Parsed JSON:", serviceAccount);
+  // Decode the Base64 string into a JSON string
+  const serviceAccountString = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, 'base64').toString('utf-8');
+  // Parse the JSON
+  const serviceAccount = JSON.parse(serviceAccountString);
+  
+  // Optionally, if needed, adjust the private key newlines:
   serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
+  
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
