@@ -9,10 +9,12 @@ import admin from 'firebase-admin';
 if (!admin.apps.length) {
   // Ensure FIREBASE_SERVICE_ACCOUNT contains your service account JSON as a string.
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  console.log("Raw ENV:", process.env.FIREBASE_SERVICE_ACCOUNT);
+  console.log("Parsed JSON:", serviceAccount);
   serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, 
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   });
 }
 const bucket = admin.storage().bucket();
@@ -20,7 +22,7 @@ const bucket = admin.storage().bucket();
 export async function POST(req) {
   try {
     // Expecting the request to include the results and scores
-    const { result, totalScore, grandTotal,user } = await req.json();
+    const { result, totalScore, grandTotal, user } = await req.json();
 
     // ── Build a prompt to generate a structured JSON analysis report ──
     const prompt = `
@@ -94,6 +96,7 @@ Return only valid JSON. Do not include any extra text or markdown formatting.
 
     const aiData = await openAiResponse.json();
     const analysisJsonString = aiData.choices[0].message.content;
+    console.log("AI Response:", aiData);
 
     // ── Parse the JSON output from OpenAI ──
     let analysisData;
@@ -149,7 +152,7 @@ function generateHtmlReport(data) {
     const radius = 35; // Slightly smaller for better spacing
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (percentage / 100) * circumference;
-    
+
     return `
       <svg width="100" height="100" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="${radius}" stroke="#e6e6e6" stroke-width="10" fill="none"/>
@@ -160,7 +163,7 @@ function generateHtmlReport(data) {
         <text x="50" y="55" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">${percentage}%</text>
       </svg>
     `;
-}
+  }
 
   const intelligenceImages = { "Musical Intelligence": "musical.webp", "Linguistics Intelligence": "linguistics.webp", "Spatial Intelligence": "spatial.webp", "Intrapersonal Intelligence": "intrapersonal.webp", "Interpersonal Intelligence": "interpersonal.webp", "Logical-Mathematical Intelligence": "logical-math.webp", "Naturalist Intelligence": "naturalistic.webp", "Bodily-Kinesthetic Intelligence": "bodily.webp", "Moral Intelligence": "moral.webp" };
 
