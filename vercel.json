@@ -1,7 +1,11 @@
 {
     "functions": {
-      "app/api/result/generateReport/route.js": {
-        "maxDuration": 50,
+      "app/api/generateAnalysis/route.js": {
+        "maxDuration": 60,
+        "memory": 1024
+      },
+      "app/api/generatePdf/route.js": {
+        "maxDuration": 60,
         "memory": 1024
       }
     }
