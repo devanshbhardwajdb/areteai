@@ -56,23 +56,33 @@ const Result = () => {
     const generatePDF = async () => {
         setLoading(true);
         try {
-            const response = await fetch('/api/generateReport', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ result, totalScore, grandTotal, user }),
-            });
-    
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.error || 'Failed to generate report');
-    
-            // Open generated PDF in a new tab
-            window.open(data.pdfUrl, '_blank');
+          // Step 1: Call the analysis endpoint
+          const analysisResponse = await fetch('/api/generateAnalysis', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ result, totalScore, grandTotal, user }),
+          });
+          const analysisResult = await analysisResponse.json();
+          if (!analysisResponse.ok) throw new Error(analysisResult.error || 'Failed to generate analysis');
+      
+          // Step 2: Call the PDF endpoint with the analysisData received
+          const pdfResponse = await fetch('/api/generatePdf', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ analysisData: analysisResult.analysisData, user }),
+          });
+          const pdfResult = await pdfResponse.json();
+          if (!pdfResponse.ok) throw new Error(pdfResult.error || 'Failed to generate PDF');
+      
+          // Open the PDF in a new tab
+          window.open(pdfResult.pdfUrl, '_blank');
         } catch (error) {
-            console.error('Error generating PDF:', error);
+          console.error('Error generating PDF:', error);
         } finally {
-            setLoading(false);
+          setLoading(false);
         }
-    };
+      };
+      
     
     return (
         <div className="min-h-[100vh] px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28">
