@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/result/generateReport.js": {
+      "app/api/result/generateReport/route.js": {
         "maxDuration": 50,
         "memory": 1024
       }
