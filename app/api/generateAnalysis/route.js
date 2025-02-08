@@ -7,7 +7,7 @@ export async function POST(req) {
 
     // Set a timeout for the OpenAI call
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 60000);
+    const timeoutId = setTimeout(() => controller.abort(), 90000);
 
     // Build the prompt for OpenAI
     const prompt = `
@@ -19,7 +19,7 @@ export async function POST(req) {
         {
           "type": string, // Name of the intelligence (e.g., "Musical Intelligence")
           "percentage": number, // Percentage score (integer between 0 and 100)
-          "description": string, // A detailed explanation of this intelligence type and how the user(don't say user say you have performed.) has performed in this intelligence, with atmost 6-7 lines.
+          "description": string, // A detailed explanation of this intelligence type and how the user(don't say user say you have performed.) has performed in this intelligence, with atmost 4-5 lines.
           "opportunities": [
               {
                   "title": string,
@@ -29,7 +29,7 @@ export async function POST(req) {
               },
               ... (at least 4 items)
           ],
-          "futureSteps": string, // Detailed suggested next steps for improvement in this intelligence, 3-4 lines.
+          "futureSteps": string, // Detailed suggested next steps for improvement in this intelligence, 2-3 lines.
         },
         ... (one object per intelligence)
       ],
@@ -53,6 +53,7 @@ export async function POST(req) {
             .join("\n")}
     
     Return only valid JSON. Do not include any extra text or markdown formatting.
+    
         `;
 
     // Call the OpenAI API
@@ -63,7 +64,7 @@ export async function POST(req) {
           'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-3.5-turbo',
           messages: [
             {
               role: 'system',
