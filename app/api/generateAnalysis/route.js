@@ -7,7 +7,7 @@ export async function POST(req) {
 
     // Set a timeout for the OpenAI call
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
 
     // Build the prompt for OpenAI
     const prompt = `
