@@ -1,21 +1,16 @@
 // File: /app/api/result/generateReport.js
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
 import admin from 'firebase-admin';
 
 
 
 if (!admin.apps.length) {
-  // Decode the Base64 string into a JSON string
   const serviceAccountString = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, 'base64').toString('utf-8');
-  // Parse the JSON
   const serviceAccount = JSON.parse(serviceAccountString);
-  
-  // Optionally, if needed, adjust the private key newlines:
   serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
-  
+
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
@@ -27,6 +22,8 @@ export async function POST(req) {
   try {
     // Expecting the request to include the results and scores
     const { result, totalScore, grandTotal, user } = await req.json();
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
 
     // ── Build a prompt to generate a structured JSON analysis report ──
     const prompt = `
@@ -96,53 +93,82 @@ Return only valid JSON. Do not include any extra text or markdown formatting.
         ],
         temperature: 0.7,
       }),
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
+
+    if (!openAiResponse.ok) {
+      const errorBody = await openAiResponse.text();
+      throw new Error(`OpenAI API error: ${openAiResponse.status} ${errorBody}`);
+    }
 
     const aiData = await openAiResponse.json();
-    const analysisJsonString = aiData.choices[0].message.content;
-    console.log("AI Response:", aiData);
 
-    // ── Parse the JSON output from OpenAI ──
+    // Validate OpenAI response structure
+    if (!aiData.choices?.[0]?.message?.content) {
+      throw new Error('Invalid OpenAI response structure');
+    }
+
+    const analysisJsonString = aiData.choices[0].message.content;
     let analysisData;
+
     try {
       analysisData = JSON.parse(analysisJsonString);
     } catch (jsonError) {
-      console.error("Failed to parse JSON from OpenAI output:", jsonError, analysisJsonString);
-      throw new Error("Invalid JSON received from AI analysis.");
+      console.error("Raw OpenAI response:", analysisJsonString);
+      throw new Error(`JSON parse error: ${jsonError.message}`);
     }
     // console.log(analysisData)
-    // ── Generate a consistent HTML report using the analysis data ──
-    const htmlContent = generateHtmlReport(analysisData);
 
-    // Create a reports directory if it doesn't exist
-    const reportsDir = path.resolve(process.cwd(), 'public/reports');
-    await fs.mkdir(reportsDir, { recursive: true });
+    let executablePath;
+    if (process.env.NODE_ENV === 'development') {
+      // Provide the path to your locally installed Chrome/Chromium.
+      executablePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+    } else {
+      executablePath = await chromium.executablePath();
+    }
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath,
+      headless: true, // or 'new' if you prefer
+      ignoreHTTPSErrors: true,
+    });
 
-    // ── Generate the PDF using Puppeteer ──
-    const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-    const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
+    await page.setContent(generateHtmlReport(analysisData), {
+      waitUntil: 'networkidle0',
+      timeout: 15000
+    });
+
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      timeout: 15000
+    });
+
     await browser.close();
 
-    // ── Save the PDF and return the public URL ──
+    // Direct upload to Firebase without local storage
     const fileName = `${user.username}-assessment-report-${Date.now()}.pdf`;
     const file = bucket.file(fileName);
 
-    // Upload the PDF buffer directly with proper metadata
     await file.save(pdfBuffer, {
       metadata: { contentType: 'application/pdf' },
     });
-    // Optionally, make the file public (or set your bucket rules to allow public read)
-    await file.makePublic();
 
-    // Construct the public URL for the PDF
+    await file.makePublic();
     const pdfUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 
     return NextResponse.json({ pdfUrl }, { status: 200 });
   } catch (error) {
     console.error('Error generating PDF:', error);
-    return NextResponse.json({ error: 'Failed to generate PDF' }, { status: 500 });
+    console.error('Error generating PDF:', error);
+    return NextResponse.json({
+      error: error.message || 'Failed to generate PDF',
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, {
+      status: error.message.includes('timeout') ? 504 : 500
+    });
   }
 }
 
