@@ -1,0 +1,9 @@
+{
+    "functions": {
+      "api/result/generateReport.js": {
+        "maxDuration": 50,
+        "memory": 1024
+      }
+    }
+  }
+  

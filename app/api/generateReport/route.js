@@ -4,6 +4,9 @@ import { NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 import admin from 'firebase-admin';
+import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer-core';
+
 
 
 if (!admin.apps.length) {
@@ -115,7 +118,11 @@ Return only valid JSON. Do not include any extra text or markdown formatting.
     await fs.mkdir(reportsDir, { recursive: true });
 
     // ── Generate the PDF using Puppeteer ──
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      executablePath: await chromium.executablePath,
+      args: chromium.args,
+      headless: true,
+    });
     const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
     const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
