@@ -65,6 +65,7 @@ export async function POST(req) {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
+          max_tokens: 3000,
           messages: [
             {
               role: 'system',
@@ -94,7 +95,7 @@ export async function POST(req) {
       throw new Error('Invalid OpenAI response structure');
     }
 
-    const analysisJsonString = aiData.choices[0].message.content;
+    const analysisJsonString = aiData.choices[0].message.content.trim();  
     let analysisData;
     try {
       analysisData = JSON.parse(analysisJsonString);
