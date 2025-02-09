@@ -1,3 +1,4 @@
+// models/Result.js
 import { Schema, model, models } from "mongoose";
 
 const ResultSchema = new Schema({
@@ -16,12 +17,16 @@ const ResultSchema = new Schema({
     uniqueId: {
         type: String,
         required: true,
-        unique: true, // Ensure this field is unique
+        unique: true,
     },
     answers: {
         type: Object,
         required: true,
     },
+    reportUrl: {
+        type: String,
+        default: null
+    }
 }, { timestamps: true });
 
 const Result = models.Result || model('Result', ResultSchema);
