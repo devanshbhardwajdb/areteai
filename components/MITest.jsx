@@ -10,16 +10,8 @@ import { useRouter } from 'next/navigation';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
-
-const Questions = () => {
+const MITest = ({ userClass }) => {
     const router = useRouter();
-    
-
-    const { class: userClass } = useParams(); // Get class parameter from route
-    // console.log(userClass,"ye hoon main")
-    const searchParams = useSearchParams(); // Get query parameters
-    const couponCode = searchParams.get('c'); // Example query parameter
-    const { user } = useAuth();
     const [answers, setAnswers] = useState({});
     const [currentQuestions, setCurrentQuestions] = useState([]);
     const [scale, setScale] = useState(0);
@@ -27,27 +19,21 @@ const Questions = () => {
     const [currentPageKey, setCurrentPageKey] = useState();
     const [intelligenceIndex, setIntelligenceIndex] = useState();
     const [loading, setLoading] = useState(false);
-    const [pageLoading, setPageLoading] = useState(true)
     const [progress, setProgress] = useState(0);
+    const [pageLoading, setPageLoading] = useState(true); // Add pageLoading state
+    const { user } = useAuth();
 
-    useEffect(() => {
-        if (!user || couponCode !== '12345') {
-            router.push('/');
-        }
-    }, [user, router, couponCode]);
-
-    
 
     useEffect(() => {
         const fetchResult = async () => {
             try {
-                const res = await fetch(`/api/questions/getquestions?selectedClass=${userClass}`);
+                const res = await fetch(`/api/questions/getmitquestions?selectedClass=${userClass}`);
                 const response = await res.json();
 
                 if (response.success) {
 
                     setQuestionSet(response.questionSet);
-                    setPageLoading(!pageLoading)
+                    setPageLoading(false); // Set pageLoading to false after fetching
                 }
                 else {
                     toast.error('This Class is not added yet');
@@ -183,75 +169,75 @@ const Questions = () => {
                 body: JSON.stringify(dataToSave),
             });
 
+            const responseData = await response.json(); // Parse response JSON
+            // console.log("Response Data:", responseData); // Log the response data
+
             if (response.ok) {
-                toast.success('Answers submitted successfully!');
-                router.push(`/result/${uniqueId}`);
-                setProgress(100);
+                try {
+                    toast.success('Answers submitted successfully!');
+                    console.log("Navigating to:", `/result/${uniqueId}`); // Log the navigation URL
+                    await router.push(`/result/${uniqueId}`);
+                    setProgress(100);
+                } catch (navigationError) {
+                    console.error('Navigation Error:', navigationError);
+                    toast.error('Error navigating to result page.');
+                }
             } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error saving result');
+                console.error("Error saving result:", response.status, responseData); // Log status and data
+                toast.error(responseData.message || 'Error saving result'); // Display error toast
+                throw new Error(responseData.message || 'Error saving result');
             }
+            setLoading(false); // Set loading to false after successful submission
         } catch (error) {
             console.error('Error:', error);
             toast.error('Error submitting answers');
-        } finally {
-            setLoading(false);
+            setLoading(false); // Set loading to false if an error occurs
         }
     };
 
     const handleNext = () => {
-        setIntelligenceIndex(intelligenceIndex + 1)
-        const currentQuestions = questionSet.intelligences[intelligenceIndex]?.questions;
-        const currentPageAnswers = currentQuestions.map((_, index) => {
-            const answer = answers[currentPageKey]?.[index];
-            return answer ? parseInt(answer, 10) : 0;
-        });
-        const pageSum = currentPageAnswers.reduce((acc, score) => acc + score, 0);
-        const totalSum = currentQuestions.length * scale
+        const nextIntelligenceIndex = intelligenceIndex + 1;
 
-        // Store the score for the current page in `answers`
-        setAnswers((prevAnswers) => ({
-            ...prevAnswers,
-            [currentPageKey]: { ...prevAnswers[currentPageKey], pageSum, totalSum },
-        }));
+        // Check if nextIntelligenceIndex is within bounds
+        if (nextIntelligenceIndex < questionSet.intelligences.length) {
+            setIntelligenceIndex(nextIntelligenceIndex);
 
-        // Move to the next page (based on the key)
-        const currentPageIndex = pageKeys.indexOf(currentPageKey);
-        if (currentPageIndex < totalPages - 1) {
-            const nextPageKey = pageKeys[currentPageIndex + 1];
+            const currentQuestions = questionSet.intelligences[nextIntelligenceIndex].questions;
+            const currentPageAnswers = currentQuestions.map((_, index) => {
+                const answer = answers[currentPageKey]?.[index];
+                return answer ? parseInt(answer, 10) : 0;
+            });
+            const pageSum = currentPageAnswers.reduce((acc, score) => acc + score, 0);
+            const totalSum = currentQuestions.length * scale
 
-            // Reset answers for the new page
+            // Store the score for the current page in `answers`
             setAnswers((prevAnswers) => ({
                 ...prevAnswers,
-                [nextPageKey]: {}, // Clear previous answers for the next page
+                [currentPageKey]: { ...prevAnswers[currentPageKey], pageSum, totalSum },
             }));
-            setCurrentPageKey(nextPageKey);
+
+            // Move to the next page (based on the key)
+            const currentPageIndex = pageKeys.indexOf(currentPageKey);
+            if (currentPageIndex < totalPages - 1) {
+                const nextPageKey = pageKeys[currentPageIndex + 1];
+
+                // Reset answers for the new page
+                setAnswers((prevAnswers) => ({
+                    ...prevAnswers,
+                    [nextPageKey]: {}, // Clear previous answers for the next page
+                }));
+                setCurrentPageKey(nextPageKey);
+            }
         }
     };
 
 
-
-
-
-
-
     return (
-        <div className="min-h-[100vh] px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28">
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={true}
-                newestOnTop={false}
-                rtl={false}
-                pauseOnFocusLoss
-                theme="dark"
-            />
-            {pageLoading ?
-                <>
-                    <Lottie animationData={Loader} loop={true} className='w-[15vw] p-0' />
-                </>
-                :
-                (<form
+        <>
+            {pageLoading ? (
+                <Lottie animationData={Loader} loop={true} className='w-[15vw] p-0' />
+            ) : (
+                <form
                     onSubmit={(e) => handleSubmit(e)}
                     method="POST"
                     className="flex flex-col gap-2 items-center md:w-3/4 w-full h-auto p-8 rounded-lg shadow-lg shadow-black/50 duration-150 transition-all font-mont  backdrop-blur-md bg-black/60 mt-40"
@@ -271,15 +257,24 @@ const Questions = () => {
                         {currentQuestions.map((question, index) => (
                             <div key={index} className="flex flex-col gap-2 w-full">
                                 <label className="text-white/90">{question}</label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    max="5"
-                                    value={answers[currentPageKey]?.[index] || ''}
-                                    onChange={(e) => handleAnswerChange(index, e.target.value)}
-                                    className="bg-transparent rounded-lg p-2 w-full focus:outline-none focus:shadow-md border border-gray-600 text-white/90 focus:border-[#00a6a6] focus:shadow-[#00a6a6]"
-                                    required
-                                />
+                                <div className="flex gap-4">
+                                    {Array.from({ length: questionSet.scale }, (_, i) => i + 1).map((value) => (
+                                        <label key={value} className="flex items-center gap-2 text-white/90">
+                                            <input
+                                                type="radio"
+                                                name={`question-${index}`}
+                                                value={value}
+                                                checked={answers[currentPageKey]?.[index] === String(value)}
+                                                onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                                className="peer sr-only"
+                                                required
+                                            />
+                                            <div className="w-5 h-5 rounded-full bg-gray-600 peer-checked:bg-[#00a6a6] flex items-center justify-center">
+                                                {value}
+                                            </div>
+                                        </label>
+                                    ))}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -307,12 +302,10 @@ const Questions = () => {
                             )}
                         </button>
                     )}
-                </form>)
-            }
+                </form>
+            )}
+        </>
+    )
+}
 
-
-        </div>
-    );
-};
-
-export default Questions;
+export default MITest

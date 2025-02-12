@@ -10,6 +10,10 @@ const ResultSchema = new Schema({
         type: Number,
         required: true,
     },
+    testType: {
+        type: String,
+        default: "MITest"
+    },
     scale: {
         type: Number,
         required: true,
@@ -29,6 +33,6 @@ const ResultSchema = new Schema({
     }
 }, { timestamps: true });
 
-const Result = models.Result || model('Result', ResultSchema);
+const MITResult = models.MITResult || model('MITResult', ResultSchema);
 
-export default Result;
+export default MITResult;

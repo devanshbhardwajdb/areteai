@@ -1,5 +1,5 @@
 // app/api/result/updateReportUrl.js
-import Result from '@models/Result';
+import Result from '@models/MITResult';
 import connectDB from '@middleware/database';
 import { NextResponse } from 'next/server';
 

@@ -1,14 +1,14 @@
 // app/api/questions/get/route.js
-import Question from '@models/Question';
+import MITest from '@models/MITest';
 import connectDB from '@middleware/database';
 
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const classNum = searchParams.get('selectedClass');
-    console.log(classNum)
+    // console.log(classNum)
     await connectDB();
 
-    const questionSet = await Question.findOne({ class: classNum });
+    const questionSet = await MITest.findOne({ class: classNum });
 
     if (!questionSet) {
         return new Response(JSON.stringify({ success: false, message: 'No questions found for this class.' }), { status: 404 });

@@ -1,5 +1,5 @@
 // app/api/questions/intelligence/questions/delete/route.js
-import Question from '@models/Question';
+import Question from '@models/MITest';
 import connectDB from '@middleware/database';
 
 export async function DELETE(req) {

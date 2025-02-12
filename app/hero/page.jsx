@@ -67,7 +67,7 @@ const Hero = () => {
                         className='font-mont text-[5.5vh]  max-xl:text-[4vh] max-lg:text-[2.4vh] max-md:text-[2vh] '>Actualize your true Potential</motion.h2>
 
 
-                    {user ? <Link href={``}><motion.button
+                    {user ? <Link href={`/assessment`}><motion.button
                         variants={slideIn3('bottom', "tween", 0, 1.0)}
                         initial="hidden"
                         whileInView="show"

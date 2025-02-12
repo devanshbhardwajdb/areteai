@@ -13,7 +13,7 @@ const IntelligenceSchema = new Schema({
 });
 
 // Define the main Question schema, including class and an array of intelligence types
-const QuestionSchema = new Schema({
+const MITestSchema = new Schema({
     class: {
         type: Number,
         required: true,
@@ -26,6 +26,6 @@ const QuestionSchema = new Schema({
     intelligences: [IntelligenceSchema] // Array of intelligence types with their questions
 }, { timestamps: true });
 
-const Question = models.Question || model('Question', QuestionSchema);
+const MITest = models.MITest || model('MITest', MITestSchema);
 
-export default Question;
+export default MITest;

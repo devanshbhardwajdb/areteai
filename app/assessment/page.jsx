@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 const Assessment = ( ) => {
     const router = useRouter();
     const [userClass, setUserClass] = useState('9');
+    const [testType, setTestType] = useState('MITest');
     const [couponCode, setCouponCode] = useState('');
     const [loading, setLoading] = useState(false);
     const { user } = useAuth();
@@ -31,7 +32,7 @@ const Assessment = ( ) => {
             if (userClass && couponCode === '12345') {
                 
                 setCouponCode("")
-                router.push(`/assessment/${userClass}?c=${couponCode}`)
+                router.push(`/assessment/${userClass}/${testType}?c=${couponCode}`)
             }
             else {
                 toast.error('Invalid Coupon Code!');
@@ -86,17 +87,25 @@ const Assessment = ( ) => {
                             placeholder="select"
                             required
                         >
-                         
                             <option value="9" className='bg-black hover:bg-black/60'>9th Class</option>
                             <option value="10" className='bg-black'>10th Class</option>
                             <option value="11" className='bg-black'>11th Class</option>
                             <option value="12" className='bg-black'>12th Class</option>
-                           
-                            
                         </select>
-
-
-
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <h3 className="text-white/90 text-lg font-medium mb-1">Select type of test:</h3>
+                        <select
+                            name="class"
+                            value={testType}
+                            onChange={(e) => { setTestType(e.target.value) }}
+                            className="bg-transparent rounded-lg p-2 w-full focus:outline-none focus:shadow-md border border-gray-600 focus:border-[#00a6a6] focus:shadow-[#00a6a6] text-white/90 placeholder-gray-400"
+                            placeholder="select"
+                            required
+                        >
+                            <option value="MITest" className='bg-black hover:bg-black/60'>Multiple Intelligence Test</option>
+                            <option value="VarkTest" className='bg-black'>Vark Test</option>
+                        </select>
                     </div>
                     <div className="flex flex-col w-full">
                         <h3 className="text-white/90 text-lg font-medium mb-1">Enter the coupon code:</h3>

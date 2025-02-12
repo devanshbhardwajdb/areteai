@@ -1,5 +1,5 @@
 // app/api/questions/intelligence/update/route.js
-import Question from '@models/Question';
+import Question from '@models/MITest';
 import connectDB from '@middleware/database';
 
 export async function PUT(req) {

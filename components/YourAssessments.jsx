@@ -59,6 +59,10 @@ const YourAssessments = () => {
                                         <h4 className="text-white/90 font-base">({elem.createdAt.split("T")[0]})</h4>
                                     </div>
                                     <div className="flex gap-2">
+                                        <h4 className="text-white/90 font-semibold">Test Type:</h4>
+                                        <h4 className="text-white/90">{elem.testType}</h4>
+                                    </div>
+                                    <div className="flex gap-2">
                                         <h4 className="text-white/90 font-semibold">Total Score:</h4>
                                         <h4 className="text-white/90">{totalPageSum}/{totalPossibleSum}</h4>
                                     </div>
