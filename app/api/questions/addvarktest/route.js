@@ -3,9 +3,8 @@ import connectDB from '@middleware/database';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-  // Destructure class and questions from the request body.
-  // The questions array should follow the VarkQuestionSchema structure.
-  const { class: classNum, questions } = await req.json();
+  // Expecting a JSON payload with class, scale, and questions
+  const { class: classNum, scale, questions } = await req.json();
 
   await connectDB();
 
@@ -18,11 +17,11 @@ export async function POST(req) {
     );
   }
 
-  // Create a new VARK test document
+  // Create and save a new VARK test document
   const newTest = new VarkTest({
     class: classNum,
-    questions
-    // testName will default to "VARK Learning Style Test" as per the schema
+    scale,
+    questions, // questions should follow the VarkQuestionSchema structure
   });
 
   await newTest.save();

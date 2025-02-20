@@ -54,7 +54,7 @@ export async function POST(req) {
     await browser.close();
 
     // Direct upload to Firebase without local storage
-    const fileName = `${user.username}-assessment-report-${Date.now()}.pdf`;
+    const fileName = `${user.username}-mit-report-${Date.now()}.pdf`;
     const file = bucket.file(fileName);
 
     await file.save(pdfBuffer, {

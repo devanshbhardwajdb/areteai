@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import MITest from '@components/MITest';
+import VarkTest from '@components/VarkTest';
 
 
 const Questions = () => {
@@ -41,7 +42,7 @@ const Questions = () => {
                 pauseOnFocusLoss
                 theme="dark"
             />
-            {(testType === 'MITest') ? <MITest userClass={userClass} /> : <div>Other Test</div>}
+            {(testType === 'MITest') ? <MITest userClass={userClass} /> : <VarkTest userClass={userClass}/>}
         </div>
     );
 };

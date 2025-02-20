@@ -161,7 +161,7 @@ const MITest = ({ userClass }) => {
             };
 
             // Save results in the database
-            const response = await fetch('/api/result/saveresult', {
+            const response = await fetch('/api/result/savemitresult', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,8 +175,8 @@ const MITest = ({ userClass }) => {
             if (response.ok) {
                 try {
                     toast.success('Answers submitted successfully!');
-                    console.log("Navigating to:", `/result/${uniqueId}`); // Log the navigation URL
-                    await router.push(`/result/${uniqueId}`);
+                    console.log("Navigating to:", `/mitresult/${uniqueId}`); // Log the navigation URL
+                    await router.push(`/mitresult/${uniqueId}`);
                     setProgress(100);
                 } catch (navigationError) {
                     console.error('Navigation Error:', navigationError);
@@ -231,6 +231,52 @@ const MITest = ({ userClass }) => {
         }
     };
 
+    const generatePDF = async () => {
+        setLoading(true);
+        try {
+            // Step 1: Call the analysis endpoint
+            const analysisResponse = await fetch('/api/generateAnalysis', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ result, totalScore, grandTotal, user }),
+            });
+            const analysisResult = await analysisResponse.json();
+            if (!analysisResponse.ok) throw new Error(analysisResult.error || 'Failed to generate analysis');
+
+            // Step 2: Call the PDF endpoint with the analysisData received
+            const pdfResponse = await fetch('/api/generatePdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ analysisData: analysisResult.analysisData, user }),
+            });
+            const pdfResult = await pdfResponse.json();
+            if (!pdfResponse.ok) throw new Error(pdfResult.error || 'Failed to generate PDF');
+
+            // Step 3: Update the result document with the PDF URL
+            const updateResponse = await fetch('/api/result/updateReportUrl', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uniqueId: result.uniqueId,
+                    reportUrl: pdfResult.pdfUrl
+                }),
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error('Failed to update report URL');
+            }
+
+            // Update local state to reflect the change
+            setResult(prev => ({ ...prev, reportUrl: pdfResult.pdfUrl }));
+
+            // Open the PDF in a new tab
+            window.open(pdfResult.pdfUrl, '_blank');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -302,6 +348,16 @@ const MITest = ({ userClass }) => {
                             )}
                         </button>
                     )}
+                    {/* {result && (
+                        <button
+                            type="button"
+                            className="nav-btn bg-[#00a6a6] text-black px-5 py-2 rounded-lg transition-all duration-150 hover:scale-95 hover:shadow-lg w-full flex justify-center items-center mt-5"
+                            disabled={loading}
+                            onClick={generatePDF}
+                        >
+                            {loading ? <Lottie animationData={A1} loop={true} className="w-6" /> : 'Generate Report'}
+                        </button>
+                    )} */}
                 </form>
             )}
         </>

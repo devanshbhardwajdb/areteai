@@ -28,7 +28,7 @@ const Result = () => {
     useEffect(() => {
         const fetchResult = async () => {
             try {
-                const res = await fetch(`/api/result/getresultbyid?id=${id}`);
+                const res = await fetch(`/api/result/getmitresultbyid?id=${id}`);
                 const response = await res.json();
                 setResult(response[0]);
                 setPageLoading(false);
@@ -57,7 +57,7 @@ const Result = () => {
         setLoading(true);
         try {
             // Step 1: Call the analysis endpoint
-            const analysisResponse = await fetch('/api/generateAnalysis', {
+            const analysisResponse = await fetch('/api/report/generateMITAnalysis', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ result, totalScore, grandTotal, user }),
@@ -66,7 +66,7 @@ const Result = () => {
             if (!analysisResponse.ok) throw new Error(analysisResult.error || 'Failed to generate analysis');
 
             // Step 2: Call the PDF endpoint with the analysisData received
-            const pdfResponse = await fetch('/api/generatePdf', {
+            const pdfResponse = await fetch('/api/report/generateMITPdf', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ analysisData: analysisResult.analysisData, user }),
@@ -75,7 +75,7 @@ const Result = () => {
             if (!pdfResponse.ok) throw new Error(pdfResult.error || 'Failed to generate PDF');
 
             // Step 3: Update the result document with the PDF URL
-            const updateResponse = await fetch('/api/result/updateReportUrl', {
+            const updateResponse = await fetch('/api/result/updatemitReportUrl', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
