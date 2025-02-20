@@ -16,17 +16,17 @@ const YourAssessments = () => {
                 // Fetch all types of results
                 const mitRes = await fetch(`/api/result/getmitresults?email=${user?.email}`);
                 const mitResponse = await mitRes.json();
-                
+
                 const varkRes = await fetch(`/api/result/getvarkresults?email=${user?.email}`);
                 const varkResponse = await varkRes.json();
-                
-            
+
+
 
                 // Combine and sort all results by date in descending order
                 const combinedResults = [
                     ...mitResponse.map(r => ({ ...r, testType: 'MIT' })),
                     ...varkResponse.map(r => ({ ...r, testType: 'VARK' })),
-                 
+
                 ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 setResults(combinedResults);
@@ -53,16 +53,16 @@ const YourAssessments = () => {
                 });
                 return {
                     mainScore: `${totalPageSum}/${totalPossibleSum}`,
-                    details: Object.entries(result.answers).map(([key, value]) => ({
-                        name: key,
-                        score: `${value.pageSum}/${value.totalSum}`
-                    }))
+                    // details: Object.entries(result.answers).map(([key, value]) => ({
+                    //     name: key,
+                    //     score: `${value.pageSum}/${value.totalSum}`
+                    // }))
                 };
-            
+
             case 'VARK':
                 const total = result.scores.V + result.scores.A + result.scores.R + result.scores.K;
                 return {
-                    mainScore: `${total}/48`,
+                    // mainScore: `${total}/48`,
                     details: [
                         { name: 'Visual', score: result.scores.V },
                         { name: 'Auditory', score: result.scores.A },
@@ -70,7 +70,7 @@ const YourAssessments = () => {
                         { name: 'Kinesthetic', score: result.scores.K }
                     ]
                 };
-            
+
             default:
                 return { mainScore: '0/0', details: [] };
         }
@@ -87,7 +87,7 @@ const YourAssessments = () => {
                     ) : (
                         <h3 className='text-white text-3xl max-xl:text-xl font-bold'>You have no assessment yet.</h3>
                     )}
-                    <div className="flex max-md:flex-col items-stretch gap-5 flex-wrap">
+                    <div className="flex max-md:flex-col  items-stretch gap-5 flex-wrap">
                         {results.map((result, index) => {
                             const scoreData = calculateScore(result);
                             return (
@@ -100,22 +100,22 @@ const YourAssessments = () => {
                                             Class {result.class} | {result.createdAt.split("T")[0]}
                                         </h4>
                                     </div>
+                                   {scoreData.mainScore && <div className="flex justify-between items-center">
+                                        <h4 className="text-white/90 font-semibold">Total Score : </h4>
+                                        <h4 className="text-white/90"> {scoreData.mainScore}</h4>
+                                    </div>}
                                     <div className="flex flex-col gap-4 w-full">
-                                        <div className="flex justify-between items-center">
-                                            <h4 className="text-white/90 font-semibold">Total Score:</h4>
-                                            <h4 className="text-white/90">{scoreData.mainScore}</h4>
-                                        </div>
-                                        {/* <div className="flex flex-col gap-2">
-                                            <h4 className="text-white/90 font-semibold">Breakdown:</h4>
-                                            {scoreData.details.map((detail, idx) => (
+                                        <div className="flex flex-col gap-2">
+                                            {/* <h4 className="text-white/90 font-semibold">Breakdown:</h4> */}
+                                            {scoreData.details?.map((detail, idx) => (
                                                 <div key={idx} className="flex justify-between items-center text-sm">
                                                     <span className="text-white/80">{detail.name}:</span>
                                                     <span className="text-white/80">{detail.score}</span>
                                                 </div>
                                             ))}
-                                        </div> */}
+                                        </div>
                                     </div>
-                                    <Link 
+                                    <Link
                                         href={`/${result.testType.toLowerCase()}result/${result.uniqueId}`}
                                         rel="noopener noreferrer"
                                         className='bg-[#00a6a6] text-black px-6 py-2 font-mont text-base rounded-full duration-300 hover:shadow-md hover:shadow-black hover:scale-95 mt-2'

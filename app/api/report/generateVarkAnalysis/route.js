@@ -10,8 +10,7 @@ const SYSTEM_ROLE = `You are an expert learning styles analyst specializing in V
 4. Maintain a professional and encouraging tone
 5. Format response in valid JSON structure`;
 
-const USER_ROLE = `As a learning analyst, provide a comprehensive VARK analysis based on the user's scores.
-Include specific strategies, improvements, and future steps for each learning style.`;
+
 
 export async function POST(req) {
   const controller = new AbortController();
@@ -20,49 +19,135 @@ export async function POST(req) {
   try {
     const { result, user } = await req.json();
 
-    if (!result?.scores || !result.scores.hasOwnProperty('V') || 
-        !result.scores.hasOwnProperty('A') || !result.scores.hasOwnProperty('R') || 
-        !result.scores.hasOwnProperty('K')) {
+    if (!result?.scores || !result.scores.hasOwnProperty('V') ||
+      !result.scores.hasOwnProperty('A') || !result.scores.hasOwnProperty('R') ||
+      !result.scores.hasOwnProperty('K')) {
       throw new Error('Invalid VARK scores provided');
     }
 
-    const structuredPrompt = `
-      Based on VARK assessment scores:
-      Visual: ${result.scores.V}
-      Aural: ${result.scores.A}
-      Read/Write: ${result.scores.R}
-      Kinesthetic: ${result.scores.K}
+    // const structuredPrompt = `
+    //   Based on VARK assessment scores:
+    //   Visual: ${result.scores.V}
+    //   Aural: ${result.scores.A}
+    //   Read/Write: ${result.scores.R}
+    //   Kinesthetic: ${result.scores.K}
 
-      Provide analysis in this exact JSON structure:
+    //   Provide analysis in this exact JSON structure:
+    //   {
+    //     "learningStyles": [
+    //       {
+    //         "type": string,
+    //         "percentage": number,
+    //         "description": string,
+    //         "studyStrategies": [
+    //           {
+    //             "title": string,
+    //             "description": string,
+    //             "areasForImprovement": string,
+    //             "howToImprove": string
+    //           }
+    //         ],
+    //         "futureSteps": string
+    //       }
+    //     ],
+    //     "overall": {
+    //       "strengths": string,
+    //       "weaknesses": string,
+    //       "recommendedStudyMethods": string
+    //     }
+    //   }`;
+
+    const USER_PROMPT = `
+Generate a comprehensive learning style analysis for ${user.name} based on these scores:
+Visual: ${result.scores.V}%
+Reading: ${result.scores.A}%
+Auditory: ${result.scores.R}%
+Kinesthetic: ${result.scores.K}%
+
+Return only valid JSON matching exactly this structure:
+{
+  "personalGreeting": {
+    "title": string,        // Personalized greeting with name
+    "introduction": string, // 2-3 sentences introducing their learning style
+    "overview": string     // Brief overview of their dominant styles
+  },
+  "scores": {
+    "visual": number,
+    "reading": number,
+    "auditory": number,
+    "kinesthetic": number
+  },
+  "detailedAnalysis": {     //Give for all four types VARK
+    "learningPreferences": [
       {
-        "learningStyles": [
+        "style": string,          // Name of learning style
+        "percentage": number,     // Score percentage
+        "strengths": string,      // 2-3 sentences on strengths
+        "challenges": string,     // 2-3 sentences on challenges
+        "strategies": [
           {
-            "type": string,
-            "percentage": number,
+            "title": string,
             "description": string,
-            "studyStrategies": [
-              {
-                "title": string,
-                "description": string,
-                "areasForImprovement": string,
-                "howToImprove": string
-              }
-            ],
-            "futureSteps": string
+            "implementation": string
           }
-        ],
-        "overall": {
-          "strengths": string,
-          "weaknesses": string,
-          "recommendedStudyMethods": string
-        }
-      }`;
+        ]
+      }
+    ]
+  },
+  "practicalApplications": {
+    "studyTips": [
+      {
+        "title": string,
+        "description": string,
+        "examples": [string]
+      }
+    ],
+    "recommendedTools": [
+      {
+        "name": string,
+        "purpose": string,
+        "benefitsForStyle": string
+      }
+    ]
+  },
+  "reflectionQuestions": [
+    {
+      "question": string,
+      "purpose": string
+    }
+  ],
+  "nextSteps": {
+    "immediateActions": [string],
+    "longTermRecommendations": string,
+    "resourceSuggestions": [
+      {
+        "name": string,
+        "type": string,
+        "benefit": string
+      }
+    ]
+  },
+  "conclusion": {
+    "summary": string,          // 2-3 sentences summarizing key points
+    "encouragement": string     // Positive closing message
+  }
+}
+
+Guidelines:
+1. Make all text content personal, encouraging, and action-oriented
+2. Include specific examples and practical applications
+3. Focus on strengths while acknowledging areas for improvement
+4. Provide concrete, implementable strategies
+5. Maintain a positive, empowering tone throughout
+6. Ensure all JSON is properly formatted and valid
+7. Return only the JSON object with no additional text or explanation`;
+
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: SYSTEM_ROLE },
-        { role: 'user', content: structuredPrompt }
+        { role: 'user', content: USER_PROMPT }
       ],
       temperature: 0.7,
       max_tokens: 4000

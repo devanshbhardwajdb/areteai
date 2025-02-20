@@ -133,7 +133,7 @@ const VarkTest = ({ userClass }) => {
                                 </label>
                                 <div className="flex flex-col pl-6 gap-4">
                                     {['V', 'A', 'R', 'K'].map((option, optIndex) => (
-                                        <label key={optIndex} className="flex items-center gap-2 text-white/90">
+                                        <label key={optIndex} className="flex items-center gap-2 text-white/90 cursor-pointer ">
                                             <input
                                                 type="radio"
                                                 name={`question-${index}`}

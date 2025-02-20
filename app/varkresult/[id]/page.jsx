@@ -150,7 +150,7 @@ const VarkResult = () => {
     return (
         <div className="min-h-screen px-[10vw] flex flex-col justify-center items-center font-mont max-md:px-6 max-md:pt-28">
             <div className="flex flex-col gap-6 items-center md:w-3/4 w-full h-auto p-8 rounded-lg shadow-lg bg-black/60 mt-40 mb-20">
-                <h3 className="text-white text-2xl font-bold">VARK Assessment Results</h3>
+                <h3 className="text-white text-2xl font-bold">VARK Assessment Results (For Class {result.class})</h3>
                 <h4 className="text-white text-xl font-semibold">{learningStyle}</h4>
 
                 <p className="text-white text-center">
@@ -180,12 +180,12 @@ const VarkResult = () => {
                     <p className="text-white">{recommendations}</p>
                 </div> */}
 
-                {reportUrl ? (
-                    <a href={reportUrl} target="_blank" className="nav-btn bg-[#00a6a6] text-black px-5 py-2 rounded-lg">
+                {result.reportUrl ? (
+                    <a href={result.reportUrl} target="_blank" className="nav-btn bg-[#00a6a6] text-black px-5 py-2 rounded-lg transition-all duration-150 hover:scale-95 hover:shadow-lg w-full flex justify-center items-center mt-5">
                         View Report
                     </a>
                 ) : (
-                    <button onClick={generateVarkReport} className="nav-btn bg-[#00a6a6] px-5 py-2 rounded-lg" disabled={loading}>
+                    <button onClick={generateVarkReport} className="nav-btn bg-[#00a6a6] text-black px-5 py-2 rounded-lg transition-all duration-150 hover:scale-95 hover:shadow-lg w-full flex justify-center items-center mt-5" disabled={loading}>
                         {loading ? <Lottie animationData={A1} loop className="w-6" /> : 'Generate Report'}
                     </button>
                 )}

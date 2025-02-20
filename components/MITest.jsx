@@ -305,14 +305,14 @@ const MITest = ({ userClass }) => {
                                 <label className="text-white/90">{question}</label>
                                 <div className="flex gap-4">
                                     {Array.from({ length: questionSet.scale }, (_, i) => i + 1).map((value) => (
-                                        <label key={value} className="flex items-center gap-2 text-white/90">
+                                        <label key={value} className="flex items-center gap-2 text-white/90 cursor-pointer">
                                             <input
                                                 type="radio"
                                                 name={`question-${index}`}
                                                 value={value}
                                                 checked={answers[currentPageKey]?.[index] === String(value)}
                                                 onChange={(e) => handleAnswerChange(index, e.target.value)}
-                                                className="peer sr-only"
+                                                className="peer sr-only cursor-pointer"
                                                 required
                                             />
                                             <div className="w-5 h-5 rounded-full bg-gray-600 peer-checked:bg-[#00a6a6] flex items-center justify-center">

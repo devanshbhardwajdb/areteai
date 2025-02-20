@@ -10,8 +10,7 @@ export async function POST(req) {
 
         const { uniqueId, reportUrl } = await req.json();
 
-        console.log('Received uniqueId:', uniqueId);
-        console.log('Received reportUrl:', reportUrl);
+   
 
         const updatedResult = await VarkResult.findOneAndUpdate(
             { uniqueId },
@@ -27,7 +26,7 @@ export async function POST(req) {
             );
         }
 
-        console.log('Updated result:', updatedResult);
+    
 
         return NextResponse.json({ success: true, result: updatedResult }, { status: 200 });
     } catch (error) {

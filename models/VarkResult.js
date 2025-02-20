@@ -4,7 +4,6 @@ const VarkResultSchema = new Schema({
     email: { type: String, required: true },
     class: { type: Number, required: true },
     testType: { type: String, default: "VarkTest" },
-    scale: { type: Number, required: true },
     uniqueId: { type: String, required: true, unique: true },
     answers: { type: Object, required: true },
     scores: {
@@ -12,6 +11,10 @@ const VarkResultSchema = new Schema({
         A: { type: Number, default: 0 },
         R: { type: Number, default: 0 },
         K: { type: Number, default: 0 }
+    },
+    reportUrl: {
+        type: String,
+        default: null
     }
 }, { timestamps: true });
 

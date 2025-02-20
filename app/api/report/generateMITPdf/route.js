@@ -135,7 +135,7 @@ function generateHtmlReport(data) {
     <html>
     <head>
       <meta charset="utf-8">
-      <title>ARETE AI ASSESSMENT REPORT</title>
+      <title>MULTIPLE INTELLIGENCE TEST REPORT</title>
       ${styles}
     </head>
     <body>
